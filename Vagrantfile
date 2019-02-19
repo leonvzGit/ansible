@@ -1,10 +1,8 @@
 Vagrant.configure("2") do |config|
   config.vm.box = "centos/7"
-  config.vm.hostname = "vagranthost"
-  config.vm.network "private_network", ip: "192.168.50.10"
-
-  config.vm.provider "virtualbox" do |vb|
-    vb.memory = "1024"
-    vb.cpus = "2"
+  config.vm.network "forwarded_port", guest: 80, host: 8086
+  config.vm.provision "ansible_local" do |ansible|
+  ansible.playbook = "provision/playbook.yml"
+  ansible.verbose = true
   end
 end
